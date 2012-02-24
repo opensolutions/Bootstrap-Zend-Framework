@@ -47,7 +47,12 @@ class Twitter_Form extends Zend_Form
 		{
 			$element = $this->getElement($name);
 		}
-
+		else if($element instanceof Zend_Form_Element && $name == null)
+		{
+		    $element->clearDecorators();
+		    $element->setDecorators( $this->_getElementDecorators() );
+		}
+		
 		if($element instanceof Zend_Form_Element_File)
 		{
 			$decorators = $this->_getElementDecorators();
