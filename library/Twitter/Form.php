@@ -15,7 +15,7 @@ class Twitter_Form extends Zend_Form
 
 		// Decorators for the form itself
 		$this->addDecorator("FormElements")
-			->addDecorator("HtmlTag", array("tag" => "fieldset"));
+			->addDecorator("Fieldset");
 
 		parent::__construct($options);
 	}
@@ -47,18 +47,18 @@ class Twitter_Form extends Zend_Form
 		{
 			$element = $this->getElement($name);
 		}
-		else if($element instanceof Zend_Form_Element && $name == null)
+		// An existing instance of a form element was added to the form
+		// We need to reset its decorators
+		else
 		{
-		    $element->clearDecorators();
-		    $element->setDecorators( $this->_getElementDecorators() );
+			$element->clearDecorators();
+			$element->setDecorators($this->_getElementDecorators());
 		}
-		
+
 		if($element instanceof Zend_Form_Element_File)
 		{
 			$decorators = $this->_getElementDecorators();
-
 			$decorators[0] = "File";
-
 			$element->setDecorators($decorators);
 		}
 
@@ -141,7 +141,7 @@ class Twitter_Form extends Zend_Form
 			$element->setDecorators(array("ViewHelper"));
 		}
 		
-		if($element instanceof Zend_Form_Element_Textarea)
+		if($element instanceof Zend_Form_Element_Textarea && !$element->getAttrib('rows'))
 		{
 			$element->setAttrib('rows', '3');
 		}
@@ -170,16 +170,33 @@ class Twitter_Form extends Zend_Form
 
 		return $displayGroup;
 	}
-
+	
+	/**
+	 * Render
+	 * @param  Zend_View_Interface $view
+	 * @return void
+	 */
 	public function render(Zend_View_Interface $view = null)
 	{
-		if($this->getAttrib("horizontal"))
-		{
-			$this->addDecorator("Form", array("class" => "form-horizontal"));
-		} else {
-			$this->addDecorator("Form", array("class" => "form-vertical"));
-		}
+        $formTypes = array( // avaible form types of Twitter Bootstrap form (i.e. classes)
+          'horizontal',
+          'inline',
+          'vertical',
+          'search'
+        );
+        
+        $set = false;
+        
+        foreach($formTypes as $type) {
+            if($this->getAttrib($type)) {
+                $this->addDecorator("Form", array("class" => "form-$type"));
+                $set = true;
+            } 
+        }
+        if(true !== $set) { // if neither type was set, we set the default vertical class
+            $this->addDecorator("Form", array("class" => "form-vertical"));
+        }
 
-		return parent::render();
+		return parent::render($view);
 	}
 }
