@@ -65,7 +65,8 @@ class Twitter_Form extends Zend_Form
 		// Special style for Zend
 		if($element instanceof Zend_Form_Element_Submit
 			|| $element instanceof Zend_Form_Element_Reset
-			|| $element instanceof Zend_Form_Element_Button)
+			|| $element instanceof Zend_Form_Element_Button
+		    || $element instanceof OSS_Form_Element_Buttonlink)
 		{
 			$class = "";
 
@@ -191,7 +192,7 @@ class Twitter_Form extends Zend_Form
             if($this->getAttrib($type)) {
                 $this->addDecorator("Form", array("class" => "form-$type"));
                 $set = true;
-            } 
+            }
         }
         if(true !== $set) { // if neither type was set, we set the default vertical class
             $this->addDecorator("Form", array("class" => "form-vertical"));
