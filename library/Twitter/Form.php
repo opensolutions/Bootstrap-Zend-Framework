@@ -190,14 +190,17 @@ class Twitter_Form extends Zend_Form
         
         $set = false;
         
-        foreach($formTypes as $type) {
-            if($this->getAttrib($type)) {
-                $this->addDecorator("Form", array("class" => "form-$type"));
-                $set = true;
+        if( !$this->loadDefaultDecoratorsIsDisabled() )
+        {
+            foreach($formTypes as $type) {
+                if($this->getAttrib($type)) {
+                    $this->addDecorator("Form", array("class" => "form-$type"));
+                    $set = true;
+                }
             }
-        }
-        if(true !== $set) { // if neither type was set, we set the default vertical class
-            $this->addDecorator("Form", array("class" => "form-vertical"));
+            if(true !== $set) { // if neither type was set, we set the default vertical class
+                $this->addDecorator("Form", array("class" => "form-vertical"));
+            }
         }
 
 		return parent::render($view);
