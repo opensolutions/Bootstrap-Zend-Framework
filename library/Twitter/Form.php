@@ -204,5 +204,5 @@ class Twitter_Form extends Zend_Form
         }
 
 		return parent::render($view);
-	}
+    }
 }
