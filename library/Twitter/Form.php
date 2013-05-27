@@ -41,7 +41,7 @@ class Twitter_Form extends Zend_Form
 	 */
 	public function addElement($element, $name = null, $options = null)
 	{
-        $element->addPrefixPath("Twitter_Form_Decorator", "Twitter/Form/Decorator/", "decorator");
+		$element->addPrefixPath("Twitter_Form_Decorator", "Twitter/Form/Decorator/", "decorator");
 		parent::addElement($element, $name, $options);
 
 		if(!$element instanceof Zend_Form_Element && $name != null)
