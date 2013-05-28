@@ -41,19 +41,22 @@ class Twitter_Form extends Zend_Form
 	 */
 	public function addElement($element, $name = null, $options = null)
 	{
-		$element->addPrefixPath("Twitter_Form_Decorator", "Twitter/Form/Decorator/", "decorator");
+	        if( $element instanceof Zend_Form_Element )
+	            $element->addPrefixPath("Twitter_Form_Decorator", "Twitter/Form/Decorator/", "decorator");
+	            
 		parent::addElement($element, $name, $options);
 
 		if(!$element instanceof Zend_Form_Element && $name != null)
 		{
-			$element = $this->getElement($name);
+			if( $element = $this->getElement( $name ) )
+                            $element->addPrefixPath("Twitter_Form_Decorator", "Twitter/Form/Decorator/", "decorator");
 		}
 		// An existing instance of a form element was added to the form
 		// We need to reset its decorators
 		else
 		{
-			$element->clearDecorators();
-			$element->setDecorators($this->_getElementDecorators());
+                    $element->clearDecorators();
+                    $element->setDecorators($this->_getElementDecorators());
 		}
 
 		if($element instanceof Zend_Form_Element_File)
