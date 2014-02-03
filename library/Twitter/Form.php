@@ -130,6 +130,11 @@ class Twitter_Form extends Zend_Form
 				$element->setAttrib("labelclass", "radio");
 			}
 
+			if($element->getAttrib("inline"))
+			{
+				$element->setAttrib("labelclass", "radio inline");
+			}
+
 			$element->setOptions(array("separator" => ""));
 			$element->setDecorators(array(
 				"ViewHelper",
@@ -149,6 +154,11 @@ class Twitter_Form extends Zend_Form
 		if($element instanceof Zend_Form_Element_Textarea && !$element->getAttrib('rows'))
 		{
 			$element->setAttrib('rows', '3');
+		}
+		
+		if($element instanceof Zend_Form_Element_Captcha)
+		{
+			$element->removeDecorator("viewhelper");
 		}
 
         return $this;
